@@ -1,67 +1,73 @@
-const box = document.getElementById("box");
+const rocket = document.getElementById("rocket");
+const button = document.getElementById("startBtn");
+const status = document.getElementById("status");
 
-function animateElement(element, keyframes, options) {
-  return element.animate(keyframes, options).finished;
+function animateElement(element, keyframes, options){
+    return element.animate(keyframes, options).finished;
 }
 
-async function runAnimations() {
-  try {
-    // Move right
+async function launchRocket(){
+
+    button.disabled = true;
+    status.textContent = "Preparing for launch...";
+
+    // Lift off
     await animateElement(
-      box,
-      [
-        { transform: "translateX(0px)" },
-        { transform: "translateX(300px)" }
-      ],
-      {
-        duration: 1000,
-        fill: "forwards"
-      }
+        rocket,
+        [
+            {transform:"translateX(-50%) translateY(0px)"},
+            {transform:"translateX(-50%) translateY(-180px)"}
+        ],
+        {
+            duration:1200,
+            fill:"forwards",
+            easing:"ease-in"
+        }
     );
 
-    // Change color
+    status.textContent="Rocket is flying!";
+
+    // Tilt
     await animateElement(
-      box,
-      [
-        { backgroundColor: "royalblue" },
-        { backgroundColor: "crimson" }
-      ],
-      {
-        duration: 1000,
-        fill: "forwards"
-      }
+        rocket,
+        [
+            {transform:"translateX(-50%) translateY(-180px) rotate(0deg)"},
+            {transform:"translateX(-50%) translateY(-180px) rotate(-20deg)"}
+        ],
+        {
+            duration:800,
+            fill:"forwards"
+        }
     );
 
-    // Rotate
+    // Boost
     await animateElement(
-      box,
-      [
-        { transform: "translateX(300px) rotate(0deg)" },
-        { transform: "translateX(300px) rotate(360deg)" }
-      ],
-      {
-        duration: 1000,
-        fill: "forwards"
-      }
+        rocket,
+        [
+            {transform:"translateX(-50%) translateY(-180px) rotate(-20deg) scale(1)"},
+            {transform:"translateX(-50%) translateY(-180px) rotate(-20deg) scale(1.4)"}
+        ],
+        {
+            duration:700,
+            fill:"forwards"
+        }
     );
 
-    // Scale up
+    // Rainbow color effect
     await animateElement(
-      box,
-      [
-        { transform: "translateX(300px) rotate(360deg) scale(1)" },
-        { transform: "translateX(300px) rotate(360deg) scale(1.5)" }
-      ],
-      {
-        duration: 1000,
-        fill: "forwards"
-      }
+        rocket,
+        [
+            {filter:"hue-rotate(0deg)"},
+            {filter:"hue-rotate(360deg)"}
+        ],
+        {
+            duration:1200,
+            fill:"forwards"
+        }
     );
 
-    console.log("All animations completed!");
-  } catch (error) {
-    console.error("Animation failed:", error);
-  }
+    status.textContent="🎉 Mission Complete!";
+    button.disabled = false;
 }
 
-runAnimations();
+button.addEventListener("click", launchRocket);
